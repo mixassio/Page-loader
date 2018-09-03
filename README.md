@@ -1,1 +1,3 @@
-hello
+[![Maintainability](https://api.codeclimate.com/v1/badges/26814874f348c5bba581/maintainability)](https://codeclimate.com/github/mixassio/project-lvl3-s310/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/26814874f348c5bba581/test_coverage)](https://codeclimate.com/github/mixassio/project-lvl3-s310/test_coverage)
+[![Build Status](https://travis-ci.org/mixassio/project-lvl3-s310.svg?branch=master)](https://travis-ci.org/mixassio/project-lvl3-s310)

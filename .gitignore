@@ -1,0 +1,9 @@
+# Dependency directories
+node_modules/
+
+./idea
+dist/
+text/
+.idea/
+.vscode/
+package-lock.json
