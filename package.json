@@ -1,16 +1,16 @@
 {
   "name": "page-loader-mixassio",
-  "version": "1.0.0",
-  "description": "hello",
+  "version": "1.0.8",
+  "description": "page-loader",
   "main": "index.js",
   "bin": {
-    "hello": "dist/bin/hello.js"
+    "page-loader": "dist/bin/page-loader.js"
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "jest --watchAll",
     "flow": "flow",
     "flow-typed": "flow-typed",
     "babel-node": "babel-node",
@@ -27,14 +27,19 @@
   "bugs": {
     "url": "https://github.com/mixassio/project-lvl3-s310/issues"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "homepage": "https://github.com/mixassio/project-lvl3-s310#readme",
   "devDependencies": {
+    "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",
     "babel-jest": "^22.4.3",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.24.1",
+    "babel-register": "^6.26.0",
     "eslint": "^4.17.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-babel": "^5.1.0",
@@ -44,6 +49,11 @@
     "flow-bin": "^0.69.0",
     "flow-typed": "^2.4.0",
     "jest": "^22.4.3",
-    "jest-cli": "^22.4.3"
+    "jest-cli": "^22.4.3",
+    "nock": "^9.6.1"
+  },
+  "dependencies": {
+    "commander": "^2.15.1",
+    "axios": "^0.18.0"
   }
 }
