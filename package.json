@@ -1,6 +1,6 @@
 {
   "name": "page-loader-mixassio",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "page-loader",
   "main": "index.js",
   "bin": {
@@ -10,7 +10,7 @@
     "dist"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "flow": "flow",
     "flow-typed": "flow-typed",
     "babel-node": "babel-node",
