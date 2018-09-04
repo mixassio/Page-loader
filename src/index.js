@@ -10,6 +10,7 @@ const downloadPage = (linkDownload, pathDirSave) => {
   const { hostname, pathname } = url.parse(linkDownload);
   const nameFileSave = `${[...hostname.split('.'), ...pathname.split('/')].filter(el => el).join('-')}.html`;
   const pathFileSave = path.resolve(pathDirSave, nameFileSave);
+  console.log('hejjjjjj');
   return new Promise((resolve, reject) => {
     axios.get(linkDownload)
       .then((response) => {
