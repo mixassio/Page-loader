@@ -3,7 +3,7 @@ install:
 start:
 	npm run babel-node -- src/bin/page-loader.js
 lint:
-	npm run eslint src/**
+	npx eslint .
 publish:
 	npm publish
 test:

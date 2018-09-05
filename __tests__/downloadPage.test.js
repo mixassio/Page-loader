@@ -1,10 +1,7 @@
 import os from 'os';
 import fs from 'fs';
-import { promisify } from 'util';
 import nock from 'nock';
 import downloadPage from '../src';
-
-const readFileAsync = promisify(fs.readFile);
 
 nock.disableNetConnect();
 
@@ -19,7 +16,8 @@ describe('HttpRequestPromise', () => {
     const response = await downloadPage('http://hexlet.io/courses', tempDir);
     expect(response.status).toBe(status);
     expect(response.data).toBe(body);
-    const dataFile = await readFileAsync(pathFile, 'utf8');
+    const dataFile = await fs.promises.readFile(pathFile, 'utf8');
+    console.log(dataFile);
     expect(response.data).toBe(dataFile);
   });
 });
