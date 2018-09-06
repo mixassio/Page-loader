@@ -10,7 +10,7 @@
     "dist"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "flow": "flow",
     "flow-typed": "flow-typed",
     "babel-node": "babel-node",
@@ -32,7 +32,6 @@
   },
   "homepage": "https://github.com/mixassio/project-lvl3-s310#readme",
   "devDependencies": {
-
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",
@@ -54,6 +53,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
     "commander": "^2.15.1"
   }
 }
