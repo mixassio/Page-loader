@@ -37,25 +37,34 @@ export default (URI, pathDirSrcSave, pageHtml) => Promise.resolve(log(`Start dow
       .get()
       .map(el => [el.name, el.attribs[mapping[el.name]]])
       .filter(([, link]) => {
-        log(`Link resourse: ${link}`);
+        // log(`Link resourse: ${link}`);
         if (link) {
           const { host } = url.parse(link);
           return !host;
         }
       });
-    return links.map(([name, link]) => ({ tagName: name, ref: mapping[name], path: link }));
+    const listLinks = links.map(([name, link]) => ({ tagName: name, ref: mapping[name], path: link }));
+    log(`Count links for dowmload: ${listLinks.length}`);
+    return listLinks;
   })
   .then((links) => {
-    log(`List of links resourses: ${links}`);
+    // log(`List of links resourses: ${links}`);
     return [Promise.all(links.map((el) => {
-      return axios.get(url.resolve(URI, el.path))
+      log(`Downloding${el.path}`);
+      const responseType = (el.tagName === 'img') ? 'arraybuffer' : 'text';
+      return axios.get(url.resolve(URI, el.path), { responseType })
         .then((response) => {
+          log(`Response status:${response.status}`);
           const nameFile = createNewPath(el.path);
-          return fs.promises.writeFile(path.resolve(pathDirSrcSave, nameFile), response.data)
+          if (el.tagName === 'img') {
+            return fs.promises.writeFile(path.resolve(pathDirSrcSave, nameFile), Buffer.from(response.data));
+          }
+          return fs.promises.writeFile(path.resolve(pathDirSrcSave, nameFile), response.data, 'utf8');
         });
     })), links];
   })
   .then(([, links]) => {
+    log('links were writen');
     const $ = cheerio.load(pageHtml);
     links.forEach((el) => {
       const nameFile = createNewPath(el.path);
@@ -63,5 +72,11 @@ export default (URI, pathDirSrcSave, pageHtml) => Promise.resolve(log(`Start dow
     });
     return $.html();
   })
-  .then((html) => { html; })
-  .catch((err) => { console.error(err); });
+  .then((html) => {
+    log('Html was download and sent main program');
+    return html;
+  })
+  .catch((err) => {
+    log('Something was wrong');
+    console.error(err);
+  });

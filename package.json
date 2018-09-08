@@ -1,6 +1,6 @@
 {
   "name": "page-loader-mixassio",
-  "version": "1.0.17",
+  "version": "1.0.27",
   "description": "page-loader",
   "main": "index.js",
   "bin": {

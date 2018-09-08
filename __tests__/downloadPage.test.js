@@ -1,5 +1,6 @@
 import os from 'os';
 import fs from 'fs';
+import path from 'path';
 import nock from 'nock';
 // import httpAdapter from 'axios/lib/adapters/http';
 import downloadPage from '../src';
@@ -62,5 +63,13 @@ describe('Test function', () => {
     // const dataFile = await fs.promises.readFile(pathFile, 'utf8');
     // expect(response.data).toBe(dataFile);
     // expect(response.data).toBe(dataFile); //проверка на измененный файл
+  });
+  it('Download Pictures', async () => {
+    const pathPicture = path.resolve(__dirname, '___fixtures___/pictureTest.png');
+    const picture = await fs.promises.readFile(pathPicture);
+    const host = 'http://ru.hexlet.io';
+    const status = 200;
+    nock(host).get('/assets/imgs/logo.png').reply(status, picture);
+    expect(1).toBe(1); // to be c
   });
 });
