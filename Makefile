@@ -8,3 +8,8 @@ publish:
 	npm publish
 test:
 	npm test
+test-debug:
+	DEBUG=page-loader:* npm test
+watch:
+	npm run watch
+.PHONY: test

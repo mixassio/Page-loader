@@ -1,6 +1,6 @@
 {
   "name": "page-loader-mixassio",
-  "version": "1.0.10",
+  "version": "1.0.17",
   "description": "page-loader",
   "main": "index.js",
   "bin": {
@@ -10,7 +10,8 @@
     "dist"
   ],
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest",
+    "watch": "jest --watch",
     "flow": "flow",
     "flow-typed": "flow-typed",
     "babel-node": "babel-node",
@@ -55,6 +56,7 @@
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
     "commander": "^2.15.1",
+    "debug": "^3.1.0",
     "lodash": "^4.17.10"
   }
 }
