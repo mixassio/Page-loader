@@ -17,3 +17,9 @@ $ open /var/tmp/hexlet-io-courses.html
 ```
 ## How does it work
 The utility downloads the page from the network and puts it in the specified folder (by default to the program's start directory).
+
+## Example asciinema
+
+[asciinema just run and download](https://asciinema.org/a/hykYZLMzQAoFNuwvhTK7WGboV)
+
+[asciinema with debug](https://asciinema.org/a/qMWW611obHebGPNqkXnzjiSpW)

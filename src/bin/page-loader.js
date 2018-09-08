@@ -9,7 +9,7 @@ program
   .description('Download site from url to file')
   .version('0.0.1')
   .arguments('<link>')
-  .option('-o, --output <path>', 'Output dir', process.env.PWD)
+  .option('-o, --output <path>', 'Output dir', process.cwd())
   .action((linkDownload) => {
     log('Start working utilite');
     downloadPage(linkDownload, program.output)

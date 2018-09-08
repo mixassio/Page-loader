@@ -9,8 +9,10 @@ const log = debug('page-loader:page');
 
 
 const createDir = Path => fs.promises.readdir(Path)
-  .catch((err) => { fs.promises.mkdir(Path); })
-  .then(() => null);
+  .catch((err) => {
+    log('Directory was created.');
+    return fs.promises.mkdir(Path);
+  });
 
 const createNewPath = (link, ext = '') => {
   const { hostname, pathname } = url.parse(link);
@@ -37,18 +39,17 @@ export default (URI, pathDirSrcSave, pageHtml) => Promise.resolve(log(`Start dow
       .get()
       .map(el => [el.name, el.attribs[mapping[el.name]]])
       .filter(([, link]) => {
-        // log(`Link resourse: ${link}`);
         if (link) {
           const { host } = url.parse(link);
           return !host;
         }
       });
-    const listLinks = links.map(([name, link]) => ({ tagName: name, ref: mapping[name], path: link }));
-    log(`Count links for dowmload: ${listLinks.length}`);
-    return listLinks;
+    const Links = links.map(([name, link]) => ({ tagName: name, ref: mapping[name], path: link }));
+    log(`Count links for dowmload: ${Links.length}`);
+    return Links;
   })
   .then((links) => {
-    // log(`List of links resourses: ${links}`);
+    log('Start download resourse from links');
     return [Promise.all(links.map((el) => {
       log(`Downloding${el.path}`);
       const responseType = (el.tagName === 'img') ? 'arraybuffer' : 'text';
@@ -56,10 +57,8 @@ export default (URI, pathDirSrcSave, pageHtml) => Promise.resolve(log(`Start dow
         .then((response) => {
           log(`Response status:${response.status}`);
           const nameFile = createNewPath(el.path);
-          if (el.tagName === 'img') {
-            return fs.promises.writeFile(path.resolve(pathDirSrcSave, nameFile), Buffer.from(response.data));
-          }
-          return fs.promises.writeFile(path.resolve(pathDirSrcSave, nameFile), response.data, 'utf8');
+          const dataResponse = (el.tagName === 'img') ? Buffer.from(response.data) : response.data;
+          return fs.promises.writeFile(path.resolve(pathDirSrcSave, nameFile), dataResponse);
         });
     })), links];
   })
@@ -68,15 +67,11 @@ export default (URI, pathDirSrcSave, pageHtml) => Promise.resolve(log(`Start dow
     const $ = cheerio.load(pageHtml);
     links.forEach((el) => {
       const nameFile = createNewPath(el.path);
-      return $(`${el.tagName}[${el.ref} = "${el.path}"]`).attr(el.ref, path.resolve(pathDirSrcSave, nameFile));
+      $(`${el.tagName}[${el.ref} = "${el.path}"]`).attr(el.ref, path.resolve(pathDirSrcSave, nameFile));
     });
     return $.html();
   })
   .then((html) => {
     log('Html was download and sent main program');
     return html;
-  })
-  .catch((err) => {
-    log('Something was wrong');
-    console.error(err);
   });
