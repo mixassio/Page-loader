@@ -7,9 +7,18 @@ import debug from 'debug';
 
 const log = debug('page-loader:page');
 
+const ChooseResponseType = {
+  '.png': 'arraybuffer',
+  '.jpeg': 'arraybuffer',
+  '.jpg': 'arraybuffer',
+  '.js': 'text',
+  '.css': 'text',
+  '.xml': 'text',
+  '.gif': 'arraybuffer',
+};
 
 const createDir = Path => fs.promises.readdir(Path)
-  .catch((err) => {
+  .catch(() => {
     log('Directory was created.');
     return fs.promises.mkdir(Path);
   });
@@ -27,51 +36,46 @@ const mapping = {
   link: 'href',
 };
 
-export default (URI, pathDirSrcSave, pageHtml) => Promise.resolve(log(`Start download pade on: ${URI}`))
-  .then(() => {
-    log(`create dirrectory for resourse, if needs: ${pathDirSrcSave}`);
-    return createDir(pathDirSrcSave);
-  })
-  .then(() => {
-    log('Parsing main page');
-    const $ = cheerio.load(pageHtml);
-    const links = $('link, script, img')
-      .get()
-      .map(el => [el.name, el.attribs[mapping[el.name]]])
-      .filter(([, link]) => {
-        if (link) {
-          const { host } = url.parse(link);
-          return !host;
-        }
-      });
-    const Links = links.map(([name, link]) => ({ tagName: name, ref: mapping[name], path: link }));
-    log(`Count links for dowmload: ${Links.length}`);
-    return Links;
-  })
-  .then((links) => {
-    log('Start download resourse from links');
-    return [Promise.all(links.map((el) => {
-      log(`Downloding${el.path}`);
-      const responseType = (el.tagName === 'img') ? 'arraybuffer' : 'text';
-      return axios.get(url.resolve(URI, el.path), { responseType })
-        .then((response) => {
-          log(`Response status:${response.status}`);
-          const nameFile = createNewPath(el.path);
-          const dataResponse = (el.tagName === 'img') ? Buffer.from(response.data) : response.data;
-          return fs.promises.writeFile(path.resolve(pathDirSrcSave, nameFile), dataResponse);
-        });
-    })), links];
-  })
-  .then(([, links]) => {
-    log('links were writen');
-    const $ = cheerio.load(pageHtml);
-    links.forEach((el) => {
-      const nameFile = createNewPath(el.path);
-      $(`${el.tagName}[${el.ref} = "${el.path}"]`).attr(el.ref, path.resolve(pathDirSrcSave, nameFile));
+const createListLinks = (pageHtml, pathDirSrcSave) => {
+  log('Parsing main page');
+  const $ = cheerio.load(pageHtml);
+  const filtered = $('link, script, img')
+    .get()
+    .map(el => [el.name, el.attribs[mapping[el.name]]])
+    .filter(([, el]) => el)
+    .filter(([, link]) => {
+      const { host } = url.parse(link);
+      return !host;
     });
-    return $.html();
-  })
-  .then((html) => {
-    log('Html was download and sent main program');
-    return html;
+  const links = filtered.map(([name, link]) => ({ tagName: name, ref: mapping[name], path: link }));
+  log(`Count links for dowmload: ${links.length}`);
+  links.forEach((el) => {
+    const nameFile = createNewPath(el.path);
+    $(`${el.tagName}[${el.ref} = "${el.path}"]`).attr(el.ref, path.resolve(pathDirSrcSave, nameFile));
   });
+  return [links, $.html()];
+};
+
+export default (uri, pathDirSrcSave, pageHtml) => {
+  const [linksSrc, pageModify] = createListLinks(pageHtml, pathDirSrcSave);
+  return createDir(pathDirSrcSave)
+    .then(() => {
+      log('Start download resourse from links');
+      return Promise.all(linksSrc.map((el) => {
+        log(`Downloding${el.path}`);
+        const { ext } = path.parse(el.path);
+        const responseType = (ChooseResponseType[ext]) ? ChooseResponseType[ext] : 'text';
+        return axios.get(url.resolve(uri, el.path), { responseType })
+          .then((response) => {
+            log(`Response status:${response.status}`);
+            const nameFile = createNewPath(el.path);
+            const dataResponse = (el.tagName === 'img') ? Buffer.from(response.data) : response.data;
+            return fs.promises.writeFile(path.resolve(pathDirSrcSave, nameFile), dataResponse);
+          });
+      }));
+    })
+    .then(() => {
+      log('links were loaded');
+      return pageModify;
+    });
+};

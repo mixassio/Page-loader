@@ -15,7 +15,7 @@ program
     downloadPage(linkDownload, program.output)
       .then(() => log('Page and resourses were load'))
       .catch((err) => {
-        console.error(err);
+        console.error(err.message);
         process.exit(1);
       });
   })
