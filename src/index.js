@@ -3,7 +3,7 @@ import axios from 'axios';
 import url from 'url';
 import path from 'path';
 import debug from 'debug';
-import getSrcHtml from './getEndHtml';
+import getSrcHtml from './getSrcHtml';
 
 const log = debug('page-loader:app');
 
