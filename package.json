@@ -1,6 +1,6 @@
 {
   "name": "page-loader-mixassio",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "description": "page-loader",
   "main": "index.js",
   "bin": {
@@ -58,6 +58,7 @@
     "cheerio": "^1.0.0-rc.2",
     "commander": "^2.15.1",
     "debug": "^3.1.0",
+    "listr": "^0.14.2",
     "lodash": "^4.17.10"
   }
 }

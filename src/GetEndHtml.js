@@ -3,6 +3,7 @@ import axios from 'axios';
 import url from 'url';
 import fs from 'fs';
 import path from 'path';
+import Listr from 'listr';
 import debug from 'debug';
 
 const log = debug('page-loader:page');
@@ -61,6 +62,36 @@ export default (uri, pathDirSrcSave, pageHtml) => {
   return createDir(pathDirSrcSave)
     .then(() => {
       log('Start download resourse from links');
+      const tasks = new Listr(linksSrc.map((el) => {
+        const { ext } = path.parse(el.path);
+        const responseType = (ChooseResponseType[ext]) ? ChooseResponseType[ext] : 'text';
+        const objListr = {
+          title: el.path,
+          task: () => axios.get(url.resolve(uri, el.path), { responseType })
+            .then((response) => {
+              log(`Response status:${response.status}`);
+              const nameFile = createNewPath(el.path);
+              const dataResponse = (el.tagName === 'img') ? Buffer.from(response.data) : response.data;
+              return fs.promises.writeFile(path.resolve(pathDirSrcSave, nameFile), dataResponse);
+            }),
+        };
+        return objListr;
+      }), { concurrent: true });
+      return tasks;
+    })
+    .then(tasks => tasks.run())
+    .then(() => {
+      log('links were loaded');
+      return pageModify;
+    });
+};
+
+/**
+ export default (uri, pathDirSrcSave, pageHtml) => {
+  const [linksSrc, pageModify] = createListLinks(pageHtml, pathDirSrcSave);
+  return createDir(pathDirSrcSave)
+    .then(() => {
+      log('Start download resourse from links');
       return Promise.all(linksSrc.map((el) => {
         log(`Downloding${el.path}`);
         const { ext } = path.parse(el.path);
@@ -69,7 +100,7 @@ export default (uri, pathDirSrcSave, pageHtml) => {
           .then((response) => {
             log(`Response status:${response.status}`);
             const nameFile = createNewPath(el.path);
-            const dataResponse = (el.tagName === 'img') ? Buffer.from(response.data) : response.data;
+           const dataResponse = (el.tagName === 'img') ? Buffer.from(response.data) : response.data;
             return fs.promises.writeFile(path.resolve(pathDirSrcSave, nameFile), dataResponse);
           });
       }));
@@ -79,3 +110,4 @@ export default (uri, pathDirSrcSave, pageHtml) => {
       return pageModify;
     });
 };
+ */
