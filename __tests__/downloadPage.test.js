@@ -39,6 +39,7 @@ describe('Test function', () => {
       '<link href="/courses/assets/application4.css" sizes="128x128">',
       '<script src="/courses/assets/application6.js">',
       '</div></body></html>'].join('');
+    /*
     const bodyLocalLinks = [
       '<html><head></head><body><div>',
       `<img src="${tempDir}ru-hexlet-io_files/courses-assets-application1.png" />`,
@@ -49,6 +50,7 @@ describe('Test function', () => {
       `<link href="${tempDir}ru-hexlet-io_files/courses-assets-application4.css" sizes="128x128">`,
       `<script src="${tempDir}ru-hexlet-io_files/courses-assets-application6.js">`,
       '</div></body></html>'].join('');
+    */
     nock(host).get('/courses').reply(status, body);
     nock(host).get('/courses/assets/application1.png').reply(status, 'hello, world');
     nock(host).get('/learning/assets/application5.png').reply(status, 'hello, world');
