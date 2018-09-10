@@ -25,3 +25,5 @@ The utility downloads the page from the network and puts it in the specified fol
 [asciinema with debug](https://asciinema.org/a/qMWW611obHebGPNqkXnzjiSpW)
 
 [asccinema with listr](https://asciinema.org/a/mPPzXgFclMcfkj5laI4YJZM4V)
+
+[asciinema with slow internet](https://asciinema.org/a/ok9spIE0CN2DkfNnsFfGA0OSa)
