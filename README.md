@@ -1,9 +1,12 @@
-# page-loader-mixassio
-This project is an educational on www.hexlet.io
-
 [![Maintainability](https://api.codeclimate.com/v1/badges/26814874f348c5bba581/maintainability)](https://codeclimate.com/github/mixassio/project-lvl3-s310/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/26814874f348c5bba581/test_coverage)](https://codeclimate.com/github/mixassio/project-lvl3-s310/test_coverage)
 [![Build Status](https://travis-ci.org/mixassio/project-lvl3-s310.svg?branch=master)](https://travis-ci.org/mixassio/project-lvl3-s310)
+
+# Загрузчик страниц
+Утилита скачивает страницу из сети и кладет в указанную папку (по умолчанию в директорию запуска программы).
+Также произойдет скачивание всех локальных ресурсов (ссылки без указания домена) находящихся на странице.
+В итоге получается страница для чтения оф-лайн.
+
 
 ## Install
 ```
@@ -17,13 +20,3 @@ $ open /var/tmp/hexlet-io-courses.html
 ```
 ## How does it work
 The utility downloads the page from the network and puts it in the specified folder (by default to the program's start directory).
-
-## Example asciinema
-
-[asciinema just run and download](https://asciinema.org/a/hykYZLMzQAoFNuwvhTK7WGboV)
-
-[asciinema with debug](https://asciinema.org/a/qMWW611obHebGPNqkXnzjiSpW)
-
-[asccinema with listr](https://asciinema.org/a/mPPzXgFclMcfkj5laI4YJZM4V)
-
-[asciinema with slow internet](https://asciinema.org/a/ok9spIE0CN2DkfNnsFfGA0OSa)

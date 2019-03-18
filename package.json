@@ -25,13 +25,9 @@
   },
   "author": "mixassio",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mixassio/project-lvl3-s310/issues"
-  },
   "jest": {
     "testEnvironment": "node"
   },
-  "homepage": "https://github.com/mixassio/project-lvl3-s310#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
